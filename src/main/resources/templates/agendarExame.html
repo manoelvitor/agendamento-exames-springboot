@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<link rel="stylesheet"
+	href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" />
+<script src="http://code.jquery.com/jquery-1.8.2.js"></script>
+<script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script>
+<!-- Bootstrap CSS -->
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous">
+
+
+<script src="https://kit.fontawesome.com/4aac1b864c.js"
+	crossorigin="anonymous"></script>
+
+
+
+<style type="text/css">
+th {
+	background-color: #4169E1;
+	color: white;
+}
+
+td, th, tr {
+	border: solid 2px black;
+}
+</style>
+<title>Agenda Exame</title>
+</head>
+<body>
+	<nav class="navbar navbar-expand-lg navbar-light"
+		style="background-color: #4169E1;">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="#"> <img alt=""
+				src="https://seeklogo.com/images/M/medicina-logo-886CC8F59D-seeklogo.com.png"
+				width="50px">
+			</a>
+			<button class="navbar-toggler" type="button"
+				data-bs-toggle="collapse" data-bs-target="#navbarNav"
+				aria-controls="navbarNav" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="navbar-nav"
+					style="margin: auto; font-size: 22px; color: white">
+					<li class="nav-item" style="padding: 10px"><a
+						class="nav-link active" aria-current="page" th:href="@{'/'}"
+						style="color: white;"> <i class="fas fa-home"></i> Inicio
+					</a></li>
+					<li class="nav-item" style="padding: 10px"><a
+						class="nav-link active" aria-current="page"
+						th:href="@{'/listarAgenda'}" style="color: white;"><i
+							class="fas fa-user-check"> </i> Consultar</a></li>
+					<li class="nav-item" style="padding: 10px"><a
+						class="nav-link active" aria-current="page" href="#"
+						style="color: white;"><i class="fas fa-clipboard-list"></i>
+							Agendar</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<div style="margin-top: 60px">
+		<h1 style="text-align: center">Agendar Exame</h1>
+	</div>
+
+	<form method="POST" th:action="@{/novoAgendamento}" action="#"
+		style="width: 70%; margin: auto; margin-top: 80px; font-size: 22px;">
+		<div class="form-group">
+			<label>Nome Completo do Paciente</label> <input name="nomePaciente"
+				type="text" class="form-control" placeholder="Nome Completo">
+		</div>
+
+		<div class="form-group">
+			<label>CPF</label> <input type="text" class="form-control"
+				placeholder="CPF" name="cpf" pattern="\d{3}\.?\d{3}\.?\d{3}-?\d{2}"
+				title="Digite um CPF no formato: xxx.xxx.xxx-xx">
+		</div>
+
+		<div class="form-group">
+			<label>RG</label> <input type="text" class="form-control"
+				placeholder="RG" name="rg" pattern="\d{2}\.?\d{3}\.?\d{3}-?\d{1}"
+				title="Digite um RG no formato: xx.xxx.xxx-x">
+		</div>
+
+		<div class="form-group">
+			<label>Data do Exame</label> <input type="datetime-local" id="data" th:text="${#temporals.formatISO(dataExame)}"
+				class="form-control" placeholder="dd/mm/aaaa" name="dataExame" >				
+		</div>
+
+		<div class="form-group">
+			<label>Selecione o Exame</label><br> <select class="form-select"
+				aria-label="Default select example">
+				<div th:each="e: ${agendarExame}">
+					<option class="form-control" th:text="${e.nomeExame}" style=""></option>
+				</div>
+			</select>
+		</div>
+
+		<button type="submit" class="btn btn-primary">Confirmar</button>
+	</form>
+
+	<script>
+		$(function() {
+			$("#calendario")
+					.datepicker(
+							{
+								dateFormat : 'dd/mm/yy',
+								dayNames : [ 'Domingo', 'Segunda', 'Terça',
+										'Quarta', 'Quinta', 'Sexta', 'Sábado',
+										'Domingo' ],
+								dayNamesMin : [ 'D', 'S', 'T', 'Q', 'Q', 'S',
+										'S', 'D' ],
+								dayNamesShort : [ 'Dom', 'Seg', 'Ter', 'Qua',
+										'Qui', 'Sex', 'Sáb', 'Dom' ],
+								monthNames : [ 'Janeiro', 'Fevereiro', 'Março',
+										'Abril', 'Maio', 'Junho', 'Julho',
+										'Agosto', 'Setembro', 'Outubro',
+										'Novembro', 'Dezembro' ],
+								monthNamesShort : [ 'Jan', 'Fev', 'Mar', 'Abr',
+										'Mai', 'Jun', 'Jul', 'Ago', 'Set',
+										'Out', 'Nov', 'Dez' ]
+							});
+		});
+	</script>
+
+	<!-- Optional JavaScript -->
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+		integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+		integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+		crossorigin="anonymous"></script>
+	<script src="http://code.jquery.com/jquery-1.8.2.js"></script>
+	<script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script>
+
+</body>
+</body>
+</html>
